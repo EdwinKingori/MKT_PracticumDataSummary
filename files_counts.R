@@ -60,5 +60,39 @@ ggplot(files_count_df, aes(x = Sector, y = value, fill = variable)) +
   scale_fill_manual(values = c("Gifts" = "blue", "Donors" = "red", "Promotions" = "green", "SustainerDonorCount" = "black"))
 
 
-  
+#3 Visualizing the  Relationship between Gifts and Donors
+ggplot(files_count_df, aes(x = Gifts, y = Donors, color = Sector)) +
+  geom_point(size = 4) +
+  theme_minimal() +
+  labs(title = "Relationship between Gifts and Donors", x = "Gifts", y = "Donors")+
+  scale_y_continuous(labels = comma)+
+  scale_x_continuous(labels = comma)+
+  theme(axis.text.x = element_text(angle =90 , hjust = 0.1))
+
+#4 Visualizing the  Relationship between Gifts and Prmotions
+ggplot(files_count_df, aes(x = Gifts, y = Promotions, color = Sector)) +
+  geom_point(size = 4) +
+  theme_minimal() +
+  labs(title = "Relationship between Gifts and Promotions", x = "Gifts", y = "Promotions")+
+  scale_y_continuous(labels = comma)+
+  scale_x_continuous(labels = comma)+
+  theme(axis.text.x = element_text(angle =90 , hjust = 0.1))
+
+#5 Visualizing the  Relationship between  Donors and Promotions
+ggplot(files_count_df, aes(x = Donors, y = Promotions, color = Sector)) +
+  geom_point(size = 4) +
+  theme_minimal() +
+  labs(title = "Relationship between Donors and Promotions", x = "Donors", y = "Promotions")+
+  scale_y_continuous(labels = comma)+
+  scale_x_continuous(labels = comma)+
+  theme(axis.text.x = element_text(angle =90 , hjust = 0.1))
+
+# 6. Heatmap: Correlation of matrix
+file_matrix <- cor(files_count_df[, c("Gifts", "Donors", "Promotions", "SustainerDonorCount")])
+ggplot(melt(file_matrix), aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0, limit = c(-1, 1), space = "Lab", name="Correlation") +
+  theme_minimal() +
+  labs(title = "Heatmap of Correlation Matrix", x = "", y = "")
+
   
