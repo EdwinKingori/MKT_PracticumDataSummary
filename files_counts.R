@@ -7,6 +7,10 @@ library(skimr)
 library(ggplot2)
 library(tidyr)
 library(readr)
+library(reshape2)
+library(scales)
+
+
 #importing data_set
 files_count_df <- read_xlsx("Files_counts_summary.xlsx")
 head(files_count_df)
@@ -44,8 +48,17 @@ ggplot(files_count_long_df, aes(x = Sector,y = Count, fill = Category))+
   
   coord_flip()
 
-#2 stacked bar_plot
+#2 visualizing the Correlation of Gifts, Donors, Promotions and Sustainable Donor Count by Sector using a Stacked bar plot
+#transforming the data from a wide data to a long data using the melt function
+files_count_df <- melt(files_count_df, id.vars = "Sector", measure.vars = c("Gifts", "Donors", "Promotions", "SustainerDonorCount"))
 
- 
+ggplot(files_count_df, aes(x = Sector, y = value, fill = variable)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Breakdown of Gifts, Donors, Promotions, and Sustainer Donor Count by Sector", x = "Sector", y = "Count")+
+  scale_y_continuous(labels = comma)+
+  scale_fill_manual(values = c("Gifts" = "blue", "Donors" = "red", "Promotions" = "green", "SustainerDonorCount" = "black"))
+
+
   
   
