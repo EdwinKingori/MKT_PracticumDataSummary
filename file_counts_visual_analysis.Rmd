@@ -1,6 +1,6 @@
 ---
-title: "Files_Count"
-author: "Edwin King'ori"
+title: "Files_Count Exploratory Visual Analysis"
+author: "Edwin King'ori, \nPhone: +254 714 004023"
 date: "`r Sys.Date()`"
 output:
   pdf_document: default
