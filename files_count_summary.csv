@@ -1,0 +1,37 @@
+Var1,Var2,Freq
+,   Sector,Length:6          
+,   Sector,Class :character  
+,   Sector,Mode  :character  
+,   Sector,NA
+,   Sector,NA
+,   Sector,NA
+,Client/Starter,Length:6          
+,Client/Starter,Class :character  
+,Client/Starter,Mode  :character  
+,Client/Starter,NA
+,Client/Starter,NA
+,Client/Starter,NA
+,    Gifts,Min.   :  227131  
+,    Gifts,1st Qu.:  946146  
+,    Gifts,Median : 6183447  
+,    Gifts,Mean   :13114388  
+,    Gifts,3rd Qu.:13782734  
+,    Gifts,Max.   :50576096  
+,    Donors,Min.   :  35306  
+,    Donors,1st Qu.: 172472  
+,    Donors,Median :1059216  
+,    Donors,Mean   :1305388  
+,    Donors,3rd Qu.:1950966  
+,    Donors,Max.   :3553488  
+,  Promotions,Min.   :   231850  
+,  Promotions,1st Qu.:  9102810  
+,  Promotions,Median : 59084052  
+,  Promotions,Mean   : 95441390  
+,  Promotions,3rd Qu.:138529166  
+,  Promotions,Max.   :296795118  
+,SustainerDonorCount,Min.   :  339  
+,SustainerDonorCount,1st Qu.: 3546  
+,SustainerDonorCount,Median : 5984  
+,SustainerDonorCount,Mean   :22322  
+,SustainerDonorCount,3rd Qu.:27116  
+,SustainerDonorCount,Max.   :84733  
