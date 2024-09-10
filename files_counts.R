@@ -23,14 +23,29 @@ write_csv(files_count_summary, "files_count_summary.csv")
 print(files_count_summary)
 
 #Visualizing the data
-#1 Comparing the gifts, donor and  promotions across all sectors
 
-ggplot(files_count_df, aes(x = Sector))+
-  geom_histogram(aes(y = Gifts), stat = "identity", fill = "blue", position = "dodge")+
-  geom_histogram(aes(y = Promotions), stat = "identity", fill = "green", position = "dodge")+
-  geom_histogram(aes(y = Donors), stat = "identity", fill = "yellow", position = "dodge")+
+
+#reshaping the data to long format for it to display the legend
+
+files_count_long_df <- files_count_df %>%
+  pivot_longer(cols = c(Gifts, Promotions, Donors),
+               names_to = "Category",
+               values_to = "Count")
+
+#1 Comparing the gifts, donor and  promotions across all sectors
+ggplot(files_count_long_df, aes(x = Sector,y = Count, fill = Category))+
+  geom_bar(stat = "identity", position = "dodge")+
+  scale_y_continuous(labels = scales::comma) + 
+  scale_fill_manual(values = c("Gifts" = "blue", "Donors" = "red", "Promotions" = "green")) +
   theme_minimal()+
   labs(title = "Comparing the gifts, donor and  promotions across all sectors",
        x = "Sector", y = "Count")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.1))+ 
+  
   coord_flip()
+
+#2 stacked bar_plot
+
+ 
+  
   
