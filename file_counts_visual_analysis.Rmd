@@ -1,4 +1,20 @@
-# loading library packages
+---
+title: "Files_Count"
+author: "Edwin King'ori"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+
+File_Counts Visual Analysis
+
+The 'File_Count' table in the Data Summary sheet provides a complete set of data required for a comprehensive visual analysis to be conducted. For this reason, various visual graphs were generated to find the relationships of the given variables.   
+
+Loading the necessary Library Packages
+```{r}
 library(readxl)
 library(dplyr)
 library(tidyverse)
@@ -9,34 +25,36 @@ library(tidyr)
 library(readr)
 library(reshape2)
 library(scales)
+```
 
+Importing the data-set
 
-#importing data_set
+```{r}
 files_count_df <- read_xlsx("Files_counts_summary.xlsx")
 head(files_count_df)
-
-#inspecting the data_set
+```
+Inspecting the Data-Set
+```{r}
+summary(files_count_df)
 str(files_count_df)
-summary_data <- summary(files_count_df)
+```
+The data is clean and credible for the next visualization phase
+However, since the data is wide, it has to be transformed to a long format for it to be compatible with the desired plot.
 
-#Converting the summary data into a data_frame
-files_count_summary <- as.data.frame(summary_data)
-
-#exporting the summarized data to a csv file
-write_csv(files_count_summary, "files_count_summary.csv")
-print(files_count_summary)
-
-#Visualizing the data
-
-
-#reshaping the data to long format for it to display the legend
-
+In this case:
+    Reshaping the data to long format for it to display the legend in the visualization.
+    
+```{r}
 files_count_long_df <- files_count_df %>%
   pivot_longer(cols = c(Gifts, Promotions, Donors),
                names_to = "Category",
                values_to = "Count")
+```
 
-#1 Comparing the gifts, donor and  promotions across all sectors
+#1 Generating a horizontal bar plot to compare the gifts, donor and  promotions across all sectors
+
+```{r}
+
 ggplot(files_count_long_df, aes(x = Sector,y = Count, fill = Category))+
   geom_bar(stat = "identity", position = "dodge")+
   scale_y_continuous(labels = scales::comma) + 
@@ -47,20 +65,29 @@ ggplot(files_count_long_df, aes(x = Sector,y = Count, fill = Category))+
   theme(axis.text.x = element_text(angle = 90, hjust = 0.1))+ 
   
   coord_flip()
+```
 
-#2 visualizing the Correlation of Gifts, Donors, Promotions and Sustainable Donor Count by Sector using a Stacked bar plot
-#transforming the data from a wide data to a long data using the melt function
-files_count_df <- melt(files_count_df, id.vars = "Sector", measure.vars = c("Gifts", "Donors", "Promotions", "SustainerDonorCount"))
+2 Visualizing the Correlation of Gifts, Donors, Promotions and Sustainable Donor Count by Sector using a Stacked bar plot
 
-ggplot(files_count_df, aes(x = Sector, y = value, fill = variable)) +
+```{r}
+# transforming the data from a wide data to a long data using the melt function
+files_count_long <- melt(files_count_df, id.vars = "Sector", measure.vars = c("Gifts", "Donors", "Promotions", "SustainerDonorCount"))
+```
+
+
+```{r}
+ggplot(files_count_long, aes(x = Sector, y = value, fill = variable)) +
   geom_bar(stat = "identity") +
   theme_minimal() +
   labs(title = "Breakdown of Gifts, Donors, Promotions, and Sustainer Donor Count by Sector", x = "Sector", y = "Count")+
   scale_y_continuous(labels = comma)+
   scale_fill_manual(values = c("Gifts" = "blue", "Donors" = "red", "Promotions" = "green", "SustainerDonorCount" = "black"))
 
+```
 
-#3 Visualizing the  Relationship between Gifts and Donors
+3 Visualizing the  Relationship between Gifts and Donors
+
+```{r}
 ggplot(files_count_df, aes(x = Gifts, y = Donors, color = Sector)) +
   geom_point(size = 4) +
   theme_minimal() +
@@ -69,7 +96,10 @@ ggplot(files_count_df, aes(x = Gifts, y = Donors, color = Sector)) +
   scale_x_continuous(labels = comma)+
   theme(axis.text.x = element_text(angle =90 , hjust = 0.1))
 
-#4 Visualizing the  Relationship between Gifts and Promotions
+```
+4 Visualizing the  Relationship between Gifts and Promotions
+
+```{r}
 ggplot(files_count_df, aes(x = Gifts, y = Promotions, color = Sector)) +
   geom_point(size = 4) +
   theme_minimal() +
@@ -78,7 +108,11 @@ ggplot(files_count_df, aes(x = Gifts, y = Promotions, color = Sector)) +
   scale_x_continuous(labels = comma)+
   theme(axis.text.x = element_text(angle =90 , hjust = 0.1))
 
-#5 Visualizing the  Relationship between  Donors and Promotions
+```
+5. Visualizing the  Relationship between  Donors and Promotions
+
+```{r}
+
 ggplot(files_count_df, aes(x = Donors, y = Promotions, color = Sector)) +
   geom_point(size = 4) +
   theme_minimal() +
@@ -87,7 +121,12 @@ ggplot(files_count_df, aes(x = Donors, y = Promotions, color = Sector)) +
   scale_x_continuous(labels = comma)+
   theme(axis.text.x = element_text(angle =90 , hjust = 0.1))
 
-# 6. Heatmap: Correlation of matrix
+```
+
+6. Heatmap: Correlation of matrix
+
+```{r}
+
 file_matrix <- cor(files_count_df[, c("Gifts", "Donors", "Promotions", "SustainerDonorCount")])
 ggplot(melt(file_matrix), aes(Var1, Var2, fill = value)) +
   geom_tile() +
@@ -95,4 +134,9 @@ ggplot(melt(file_matrix), aes(Var1, Var2, fill = value)) +
   theme_minimal() +
   labs(title = "Heatmap of Correlation Matrix", x = "", y = "")
 
-  
+```
+Visual Translation
+
+In all the plots, the variables Gifts, Donors and Promotions exhibit strong positive relationship, which is indicated by the higher values in these categories correlating with each other. However, there are noticeable differences of counts across the different sectors. For instance, the veterans receive a higher rate of promotions compared to sectors like health, which receive a higher number of gifts. . Despite the huge count differences between the variables, the intense red coloring exhibited in the heatmap confirms a positive correlation of the three variables. The sustainerDonorCount variable  shows a moderate correlation with other variables but a much stronger relationship with the Donors variable. 
+
+
